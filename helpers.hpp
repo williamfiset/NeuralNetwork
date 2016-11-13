@@ -21,5 +21,6 @@ void print_DBL_2d_array(double **ar, int numRows, int numCols);
 
 void trim( std::string &s );
 std::vector <std::string> split (const std::string &str, char delim );
+bool is_number(const std::string &s);
 
 #endif

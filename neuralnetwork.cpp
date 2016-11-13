@@ -171,6 +171,15 @@ double NeuralNetwork::backwardsPropagate() {
     hiddenNodeBias[i] = hiddenNodeBias[i] + LEARNING_RATE * F[i];
     
   }
+  
+  // Precompute delta values for speed optimization
+  double deltas[NUM_HIDDEN_NODES];
+  for (int j = 0; j < NUM_HIDDEN_NODES; j++) {
+    double sum = 0.0;
+    for (int k = 0; k < NUM_OUTPUT_NODES; ++k)
+      sum += delta(O[k], T[k]) * networkWeights[1][j][k];    
+    deltas[j] = sum;
+  }
 
   for (int i = 0; i < NUM_INPUT_NODES; ++i) {
 
@@ -179,12 +188,7 @@ double NeuralNetwork::backwardsPropagate() {
   
       // Get input edge weights
       double edgeWeight = networkWeights[0][i][j];
-      double sum = 0.0;
-
-      // Can I precompute these???
-      for (int k = 0; k < NUM_OUTPUT_NODES; ++k)
-        sum += delta(O[k], T[k]) * networkWeights[1][j][k];
-
+      double sum = deltas[j];
       sum *= sigmoidError(H[j]);
       sum *= I[i];
 
@@ -208,9 +212,9 @@ double NeuralNetwork::train(double **inputData, double **expectedOutput, int num
   double globalError = 9999999.0;
   const int NUM_TESTS = NUM_INPUT_NODES * numRows;
   
-  for (int epoch = 0; epoch < MAX_EPOCH && globalError > MAX_ERROR; ++epoch) {
+  for (int epoch = 1; epoch <= MAX_EPOCH && globalError > MAX_ERROR; ++epoch) {
     
-    printf("Epoch: %d\n", epoch);
+    printf("Epoch: %d  Training error: %.10f\n", epoch, globalError);
 
     // Loop through each row in the training data
     for (int i = 0; i < numRows; ++i) {

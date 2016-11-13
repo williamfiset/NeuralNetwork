@@ -1,5 +1,7 @@
 #include <iostream>
 #include <fstream>
+#include <glob.h>
+#include <map>
 
 #include "helpers.hpp"
 #include "neuralnetwork.hpp"
@@ -9,6 +11,7 @@ using namespace std;
 #define MAX_EPOCH 25000
 #define MAX_ERROR 0.00015
 #define LEARNING_RATE 0.25
+
 
 void readInput( ifstream &stream, double **inputData, double **expectedOutput, int numRows, int numInputCols, int numOutputCols ) {
 
@@ -68,7 +71,7 @@ bool readFileContents( string &filename, int *numRows, int *numCols, int *numInp
 
 }
 
-void startNeuralNet(string &trainingFileName, string &testFileName) {
+void executeNeuralNet(string &trainingFileName, string &testFileName) {
 
   string *labels = NULL;
   int numRows, numCols, numInputCols, numOutputCols, numHiddenNodes;
@@ -85,8 +88,8 @@ void startNeuralNet(string &trainingFileName, string &testFileName) {
     net.train(trainingInputData, trainingExpectedOutput, numRows);
 
     // Free memory
-    // free_DBL_2d_array(trainingInputData, numRows);
-    // free_DBL_2d_array(trainingExpectedOutput, numRows);
+    free_DBL_2d_array(trainingInputData, numRows);
+    free_DBL_2d_array(trainingExpectedOutput, numRows);
 
     if ( readFileContents(testFileName, &numRows, &numCols, &numInputCols, &numOutputCols, &labels, &testInputData, &testExpectedOutput) ) {
 
@@ -106,14 +109,65 @@ void startNeuralNet(string &trainingFileName, string &testFileName) {
     cout << "Oops something went wrong opening '" << trainingFileName << "'" << endl;
   }
 
+}
 
-  // output the standard deviation and varience and other stats
+// Find all files that end in .#.train and .#.test
+// and run them onthe neural network
+void runMultipleTests(string &directory) {
+  
+  map <string, string> trainingMap;
+  map <string, string> testMap;
+  
+  glob_t glob_result;
+  glob( (directory + "/*").c_str(), GLOB_TILDE, NULL, &glob_result);
+    
+  // Loop through all files in the directory
+  for(int i = 0; i < glob_result.gl_pathc; ++i) {
+    
+    string dirItem = string(glob_result.gl_pathv[i]);
+    cout << dirItem << endl;
+    
+    vector<string> dirItemSplit = split(dirItem, '.');
+    int N = dirItemSplit.size();
+    
+    if (N >= 3) {
 
+      // string fileName = dirItemSplit[0];
+      string fileNumber = dirItemSplit[N-2];
+      string fileExtension = dirItemSplit[N-1];
+      
+      if ( is_number(fileNumber) ) {
+        if (fileExtension == "train") {
+          trainingMap[fileNumber] = dirItem;
+        } else if (fileExtension == "test") {
+          testMap[fileNumber] = dirItem;
+        }
+      }
+      
+    }
+  }
+  
+  map<string, string>::iterator it = trainingMap.begin();
+  for( ; it != trainingMap.end(); it++ ) {
+    
+    string fileNumber = it->first;
+    string trainingFileName = it->second;
+    
+    if ( testMap.count(fileNumber) > 0 ) {
+      
+      string testFileName = testMap[fileNumber];
+      executeNeuralNet( trainingFileName, testFileName );
+      
+    }
+  }
+  
 }
 
 void printHelp() {
   printf("\nHELP MENU:\n");
-  printf("./NeuralNetMain [TRAINING_FILE][TEST_FILE]\n\n");
+  printf("./NeuralNetMain [-d DIR][-s TRAINING_FILE TEST_FILE]\n");
+  printf("-d     Specify the directory containing *.train & *.test files\n");
+  printf("-s     Single test. Specify a .train and a .test file\n\n");
 }
 
 int main(int num_arguments, char const *argv[]) {
@@ -121,16 +175,46 @@ int main(int num_arguments, char const *argv[]) {
   // Seed random number generator
   srand(time(NULL));
 
-  if (num_arguments == 3) {
+  for (int i = 1; i < num_arguments; i++ ) {
+    
+    string arg = string(argv[i]);
+    cout << arg << endl;
+    // Commandline option
+    if (arg[0] == '-') {
+    
+      string option = arg.substr(1, arg.size());
+      if (option == "d") {
+        
+        if ( (i+1) < num_arguments) {
+          
+          string dir = string(argv[++i]);
+          cout << "DIR: " << dir << endl;
+          runMultipleTests(dir);
+          
+        } else {
+          cout << "-d requires one argument, namely '-d DIR'" << endl;
+        }
+        
+      } else if (option == "s") {
+        
+        if ( (i+2) < num_arguments ) {
 
-    string trainingFileName = string(argv[1]);
-    string testFileName = string(argv[2]);
+          string trainingFileName = string(argv[++i]);
+          string testFileName = string(argv[++i]);
 
-    startNeuralNet(trainingFileName, testFileName);
-
-  } else {
-    cout << "Error not enough arguments" << endl;
-    printHelp();
+          executeNeuralNet(trainingFileName, testFileName);
+          
+        } else {
+          cout << "-s requires two arguments, namely '-s TRAINING_FILE TEST_FILE'" << endl;
+        }
+        
+      } else {
+        printf("Unknown argument '%s'\n", arg.c_str() );
+        printHelp();
+      }
+    
+    }
+        
   }
   
   return 0;

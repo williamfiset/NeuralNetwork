@@ -41,8 +41,8 @@ def jackknife( filename, num_jackknife_sets, col_names, rows, input_cutoff ):
     training_files = []
     for i in xrange(num_jackknife_sets):
 
-        test_file = open(filename + "_" + str(i) + ".test", "w+")
-        training_file = open(filename + "_" + str(i) + ".train", "w+")
+        test_file = open(filename + "." + str(i) + ".test", "w+")
+        training_file = open(filename + "." + str(i) + ".train", "w+")
         
         test_file.write( str(step) +" "+ str(num_cols) +" "+ str(input_cutoff) + "\n" )
         training_file.write( str(num_rows-step) +" "+ str(num_cols) +" "+ str(input_cutoff) + "\n" )

@@ -78,5 +78,11 @@ void trim( std::string &s ) {
   s = s.substr(left, right - left + 1 ); // substr returns a copy 
 }
 
-
+// Stolen from
+// http://stackoverflow.com/questions/4654636/how-to-determine-if-a-string-is-a-number-with-c
+bool is_number(const std::string &s) {
+    std::string::const_iterator it = s.begin();
+    while (it != s.end() && std::isdigit(*it)) ++it;
+    return !s.empty() && it == s.end();
+}
 

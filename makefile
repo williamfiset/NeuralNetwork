@@ -4,7 +4,7 @@
 CC = g++
 
 # CFLAGS are the options being passed to compiler
-CFLAGS = -g -Wall -Wno-unused -O2 -std=c++0x
+CFLAGS = -g -Wall -Wno-unused -O3 -std=c++0x
 
 object_files = neuralnetworkmain.o neuralnetwork.o helpers.o
 test_files = T.o helpers.o
