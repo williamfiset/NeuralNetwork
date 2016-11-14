@@ -120,9 +120,9 @@ void runMultipleTests(string &directory) {
   
   glob_t glob_result;
   glob( (directory + "/*").c_str(), GLOB_TILDE, NULL, &glob_result);
-    
+
   // Loop through all files in the directory
-  for(int i = 0; i < glob_result.gl_pathc; ++i) {
+  for(unsigned int i = 0; i < glob_result.gl_pathc; ++i) {
     
     string dirItem = string(glob_result.gl_pathv[i]);
     cout << dirItem << endl;

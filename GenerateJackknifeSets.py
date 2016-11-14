@@ -117,7 +117,7 @@ def getColumnData(column):
         return new_col_names, output
         
     else:
-        
+
         column = list(map(float, column))
         max_value = max(column)
         min_value = min(column)
@@ -147,7 +147,8 @@ def process(filename, num_jackknife_sets, input_cutoff):
             # Strip the newline character
             line = line.rstrip()
             
-            line_split = list(map(strip_whitespace, line.split(", ")))
+            # Splits lines, trims each string and removes empty lines
+            line_split = list(filter(None, map(strip_whitespace, line.split(", "))))
 
             # The first line contains labels
             if lineCount == 0:
