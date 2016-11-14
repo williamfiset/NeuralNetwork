@@ -8,10 +8,29 @@
 
 using namespace std;
 
-#define MAX_EPOCH 25000
-#define MAX_ERROR 0.00015
-#define LEARNING_RATE 0.25
+int MAX_EPOCH, NUM_HIDDEN_NODES;
+double MAX_ERROR, LEARNING_RATE;
 
+void setNeuralNetworkParameters() {
+
+  printf("\nPlease enter a positive integer for the number of hidden nodes\n");
+  printf("number of hidden nodes = ");
+  cin >> NUM_HIDDEN_NODES;
+
+  printf("\nPlease enter a positive integer for the maximum epoch:\n");
+  printf("maximum epoch = ");
+  cin >> MAX_EPOCH;
+
+  printf("\nPlease enter a floating point number for the amount of error until\n");
+  printf("the network is considered trained (recommended: [0.05 to 0.00001])\n");
+  printf("trained error = ");
+  cin >> MAX_ERROR;
+
+  printf("\nPlease enter a floating point number for the learning rate \n");
+  printf("learning rate = ");
+  cin >> LEARNING_RATE;
+
+}
 
 void readInput( ifstream &stream, double **inputData, double **expectedOutput, int numRows, int numInputCols, int numOutputCols ) {
 
@@ -71,20 +90,18 @@ bool readFileContents( string &filename, int *numRows, int *numCols, int *numInp
 
 }
 
+// Executes the neural network on some input. The parameters to the nerual
+// netork must be set before calling this function ( NUM_HIDDEN_NODES, MAX_EPOCH, LEARNING_RATE, MAX_ERROR ... )
 void executeNeuralNet(string &trainingFileName, string &testFileName) {
 
   string *labels = NULL;
-  int numRows, numCols, numInputCols, numOutputCols, numHiddenNodes;
+  int numRows, numCols, numInputCols, numOutputCols;
   double ** trainingInputData, ** testInputData;
   double ** trainingExpectedOutput, ** testExpectedOutput;
 
   if ( readFileContents(trainingFileName, &numRows, &numCols, &numInputCols, &numOutputCols, &labels, &trainingInputData, &trainingExpectedOutput) ) {
 
-    printf("How many hidden nodes would you like?\n");
-    printf("Enter a positive integer: ");
-    cin >> numHiddenNodes;
-
-    NeuralNetwork net( numInputCols, numHiddenNodes, numOutputCols, MAX_EPOCH, LEARNING_RATE, MAX_ERROR );
+    NeuralNetwork net( numInputCols, NUM_HIDDEN_NODES, numOutputCols, MAX_EPOCH, LEARNING_RATE, MAX_ERROR );
     net.train(trainingInputData, trainingExpectedOutput, numRows);
 
     // Free memory
@@ -125,7 +142,6 @@ void runMultipleTests(string &directory) {
   for(unsigned int i = 0; i < glob_result.gl_pathc; ++i) {
     
     string dirItem = string(glob_result.gl_pathv[i]);
-    cout << dirItem << endl;
     
     vector<string> dirItemSplit = split(dirItem, '.');
     int N = dirItemSplit.size();
@@ -133,8 +149,8 @@ void runMultipleTests(string &directory) {
     if (N >= 3) {
 
       // string fileName = dirItemSplit[0];
-      string fileNumber = dirItemSplit[N-2];
       string fileExtension = dirItemSplit[N-1];
+      string fileNumber = dirItemSplit[N-2];
       
       if ( is_number(fileNumber) ) {
         if (fileExtension == "train") {
@@ -147,19 +163,26 @@ void runMultipleTests(string &directory) {
     }
   }
   
-  map<string, string>::iterator it = trainingMap.begin();
-  for( ; it != trainingMap.end(); it++ ) {
-    
-    string fileNumber = it->first;
-    string trainingFileName = it->second;
-    
-    if ( testMap.count(fileNumber) > 0 ) {
+  if (trainingMap.size() > 0) {
+
+    setNeuralNetworkParameters();
+
+    map<string, string>::iterator it = trainingMap.begin();
+    for( ; it != trainingMap.end(); it++ ) {
       
-      string testFileName = testMap[fileNumber];
-      executeNeuralNet( trainingFileName, testFileName );
+      string fileNumber = it->first;
+      string trainingFileName = it->second;
       
+      if ( testMap.count(fileNumber) > 0 ) {
+        
+        string testFileName = testMap[fileNumber];
+        executeNeuralNet( trainingFileName, testFileName );
+        
+      }
     }
+
   }
+
   
 }
 
@@ -201,7 +224,8 @@ int main(int num_arguments, char const *argv[]) {
 
           string trainingFileName = string(argv[++i]);
           string testFileName = string(argv[++i]);
-
+          
+          setNeuralNetworkParameters();
           executeNeuralNet(trainingFileName, testFileName);
           
         } else {

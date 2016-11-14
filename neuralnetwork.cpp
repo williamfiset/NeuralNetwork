@@ -214,7 +214,7 @@ double NeuralNetwork::train(double **inputData, double **expectedOutput, int num
   
   for (int epoch = 1; epoch <= MAX_EPOCH && globalError > MAX_ERROR; ++epoch) {
     
-    printf("Epoch: %d  Training error: %.10f\n", epoch, globalError);
+    // printf("Epoch: %d  Training error: %.10f\n", epoch, globalError);
 
     // Loop through each row in the training data
     for (int i = 0; i < numRows; ++i) {
