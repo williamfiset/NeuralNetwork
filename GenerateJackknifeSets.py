@@ -4,7 +4,7 @@ William Fiset
 
 '''
 
-import sys, random
+import sys, random, re
 from pprint import pprint as pp
 
 reverse_mapping  = lambda _tuple: list(reversed(_tuple))
@@ -146,9 +146,9 @@ def process(filename, num_jackknife_sets, input_cutoff):
             
             # Strip the newline character
             line = line.rstrip()
-            
+
             # Splits lines, trims each string and removes empty lines
-            line_split = list(filter(None, map(strip_whitespace, line.split(", "))))
+            line_split = list(filter(None, map(strip_whitespace, re.split("[, ]+", line))))
 
             # The first line contains labels
             if lineCount == 0:

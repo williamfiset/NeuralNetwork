@@ -195,6 +195,12 @@ void printHelp() {
 
 int main(int num_arguments, char const *argv[]) {
 
+  if (num_arguments == 1) {
+    printf("Please supply commandline arguments!\n");
+    printHelp();
+    return 0;
+  }
+
   // Seed random number generator
   srand(time(NULL));
 
