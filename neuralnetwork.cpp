@@ -238,7 +238,7 @@ double NeuralNetwork::train(double **inputData, double **expectedOutput, int num
 
 }
 
-void NeuralNetwork::test(double ** inputData, double **expectedOutput, int numRows) {
+double NeuralNetwork::test(double ** inputData, double **expectedOutput, int numRows) {
 
   if (numRows > 0) {
 
@@ -272,61 +272,10 @@ void NeuralNetwork::test(double ** inputData, double **expectedOutput, int numRo
     }
 
     double score = testsPassed / totalTests;
-    testScores.push_back(score);
-
-    printf("%d/%d tests passed\n", testsPassed, totalTests );
+    return score;
   
-  }
-
-}
-
-void NeuralNetwork::displayStats() {
-
-  int len = testScores.size();
-
-  if (len > 0) {
-
-    double median, mean, variance, SD;
-    median = mean = variance = SD = 0;
-    
-    // Sort the test scores. Important for median.
-    sort(testScores.begin(), testScores.end());
-
-    // Find the median
-    if (len % 2 == 0) {
-      median = (testScores[len/2] + testScores[len/2 - 1]) / 2.0;
-    } else {
-      median = testScores[len/2];
-    }
-
-    // Find the mean
-    double sum = 0.0;
-    for (int i = 0; i < len; ++i)
-      sum += testScores[i];
-    mean = sum / len;
-
-    // Find variance
-    for (int i = sum = 0; i < len; ++i) {
-      double score = testScores[i];
-      sum += (mean - score) * (mean - score);
-    }
-
-    // Handle special case of one test point
-    if (len == 1)
-      variance = testScores[0];
-    else
-      variance = sum / (len-1);
-    
-    SD = sqrt(variance);
-
-    printf("You ran %d tests.\n", len );
-    printf("MEAN:     %0.4f\n", mean );
-    printf("MEDiAN:   %0.4f\n", median );
-    printf("VARIANCE: %0.4f\n", variance );
-    printf("SD:       %0.4f\n", SD );
-
   } else {
-    printf("No stats to display. Please run a jackknife set on the neural network to get statistics\n");
+    return -1;
   }
 
 }

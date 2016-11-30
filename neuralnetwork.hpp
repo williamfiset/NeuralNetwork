@@ -43,10 +43,6 @@ class NeuralNetwork {
     // Used in back propagation method 
     double ** tmpValues;
 
-    // Stores test scores from test files. The values in this vector
-    // are used to compute statistical measures.
-    std::vector <double> testScores;
-
     const inline double sigmoid(double x);
     const inline double sigmoidError(double x);
     const inline double delta(double o, double t);
@@ -61,15 +57,11 @@ class NeuralNetwork {
 
   public:
     
-    // Train the network on some input data
+    // Train the network on some input data. Returns the global error after training
     double train(double ** inputData, double **expectedOutput, int numRows);
     
-    // Test the network on some input data
-    void test(double ** inputData, double **expectedOutput, int numRows);
-
-    // Displays stats about the neural network once it has
-    // been tested and ran on some data
-    void displayStats();
+    // Test the network on some input data. Returns a score of the ratio of tests passed
+    double test(double ** inputData, double **expectedOutput, int numRows);
 
     // Constructor
     NeuralNetwork(int numInputNodes,
@@ -79,7 +71,7 @@ class NeuralNetwork {
                   double learningRate,
                   double maxError);
 
-    // Destructor
+    // Deconstructor
     ~NeuralNetwork();
     
 };

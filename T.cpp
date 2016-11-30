@@ -46,7 +46,7 @@ int main(int argc, char const *argv[]) {
 
   NeuralNetwork net(4,4,4,4,6.6,6.6);
 
-  net.displayStats();
+  // net.displayStats();
 
   return 0;
 }
