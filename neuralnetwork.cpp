@@ -240,44 +240,98 @@ double NeuralNetwork::train(double **inputData, double **expectedOutput, int num
 
 void NeuralNetwork::test(double ** inputData, double **expectedOutput, int numRows) {
 
-  int totalTests = numRows;
-  int testsPassed = 0;
+  if (numRows > 0) {
 
-  for (int i = 0; i < numRows; ++i) {
-    
-    // set I (input) and T (target) values here
-    memcpy( I, inputData[i], NUM_INPUT_NODES * sizeof(double) );
-    memcpy( T, expectedOutput[i], NUM_OUTPUT_NODES * sizeof(double) );
+    int totalTests = numRows;
+    int testsPassed = 0;
 
-    forwardPropagate();
-    bool passedTest = true;
+    for (int i = 0; i < numRows; ++i) {
+      
+      // set I (input) and T (target) values here
+      memcpy( I, inputData[i], NUM_INPUT_NODES * sizeof(double) );
+      memcpy( T, expectedOutput[i], NUM_OUTPUT_NODES * sizeof(double) );
 
-    // Extract answer
-    for (int j = 0; j < NUM_OUTPUT_NODES; ++j) {
+      forwardPropagate();
+      bool passedTest = true;
 
-      double expected      = expectedOutput[i][j];
-      double networkOutput = O[j];
+      // Extract answer from output nodes are the forward propagation
+      for (int j = 0; j < NUM_OUTPUT_NODES; ++j) {
 
-      if ( fabs(expected - networkOutput) > MAX_ACCEPTED_ERR ) {
-        passedTest = false;
-        break;
+        double networkOutput = O[j];
+        double expected      = expectedOutput[i][j];
+
+        if ( fabs(expected - networkOutput) > MAX_ACCEPTED_ERR ) {
+          passedTest = false;
+          break;
+        }
+
       }
+
+      if (passedTest) testsPassed++;
 
     }
 
-    if (passedTest) testsPassed++;
+    double score = testsPassed / totalTests;
+    testScores.push_back(score);
 
+    printf("%d/%d tests passed\n", testsPassed, totalTests );
+  
   }
-
-  printf("%d/%d tests passed\n", testsPassed, totalTests );
 
 }
 
 void NeuralNetwork::displayStats() {
 
+  int len = testScores.size();
+
+  if (len > 0) {
+
+    double median, mean, variance, SD;
+    median = mean = variance = SD = 0;
+    
+    // Sort the test scores. Important for median.
+    sort(testScores.begin(), testScores.end());
+
+    // Find the median
+    if (len % 2 == 0) {
+      median = (testScores[len/2] + testScores[len/2 - 1]) / 2.0;
+    } else {
+      median = testScores[len/2];
+    }
+
+    // Find the mean
+    double sum = 0.0;
+    for (int i = 0; i < len; ++i)
+      sum += testScores[i];
+    mean = sum / len;
+
+    // Find variance
+    for (int i = sum = 0; i < len; ++i) {
+      double score = testScores[i];
+      sum += (mean - score) * (mean - score);
+    }
+
+    // Handle special case of one test point
+    if (len == 1)
+      variance = testScores[0];
+    else
+      variance = sum / (len-1);
+    
+    SD = sqrt(variance);
+
+    printf("You ran %d tests.\n", len );
+    printf("MEAN:     %0.4f\n", mean );
+    printf("MEDiAN:   %0.4f\n", median );
+    printf("VARIANCE: %0.4f\n", variance );
+    printf("SD:       %0.4f\n", SD );
+
+  } else {
+    printf("No stats to display. Please run a jackknife set on the neural network to get statistics\n");
+  }
+
 }
 
-// Deconstrutor.
+// Deconstructor.
 // Deallocate all the memory used inside the neural network
 NeuralNetwork::~NeuralNetwork() {
 
@@ -294,7 +348,6 @@ NeuralNetwork::~NeuralNetwork() {
 
   free_DBL_2d_array(networkWeights[0], NUM_INPUT_NODES);
   free_DBL_2d_array(networkWeights[1], NUM_HIDDEN_NODES);
-  delete [] networkWeights;
 
 }
 

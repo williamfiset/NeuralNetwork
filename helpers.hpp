@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <vector>
 #include <sstream>
+#include <algorithm>
 
 void printAr(double *ar, int sz);
 void clearArray(double *ar, int sz);

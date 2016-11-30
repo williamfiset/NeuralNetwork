@@ -101,6 +101,7 @@ void executeNeuralNet(string &trainingFileName, string &testFileName) {
 
   if ( readFileContents(trainingFileName, &numRows, &numCols, &numInputCols, &numOutputCols, &labels, &trainingInputData, &trainingExpectedOutput) ) {
 
+    // Intialize and train neural network
     NeuralNetwork net( numInputCols, NUM_HIDDEN_NODES, numOutputCols, MAX_EPOCH, LEARNING_RATE, MAX_ERROR );
     net.train(trainingInputData, trainingExpectedOutput, numRows);
 
@@ -110,6 +111,7 @@ void executeNeuralNet(string &trainingFileName, string &testFileName) {
 
     if ( readFileContents(testFileName, &numRows, &numCols, &numInputCols, &numOutputCols, &labels, &testInputData, &testExpectedOutput) ) {
 
+      // Test neural network against test data
       net.test( testInputData, testExpectedOutput, numRows );
 
       // Free memory
@@ -129,7 +131,7 @@ void executeNeuralNet(string &trainingFileName, string &testFileName) {
 }
 
 // Find all files that end in .#.train and .#.test
-// and run them onthe neural network
+// and run them on the neural network
 void runMultipleTests(string &directory) {
   
   map <string, string> trainingMap;
@@ -167,12 +169,15 @@ void runMultipleTests(string &directory) {
 
     setNeuralNetworkParameters();
 
+    // Find all pairs of training and testing files and
+    // run them against the neural net
     map<string, string>::iterator it = trainingMap.begin();
     for( ; it != trainingMap.end(); it++ ) {
       
       string fileNumber = it->first;
       string trainingFileName = it->second;
       
+      // Associated test file exists
       if ( testMap.count(fileNumber) > 0 ) {
         
         string testFileName = testMap[fileNumber];
@@ -189,8 +194,9 @@ void runMultipleTests(string &directory) {
 void printHelp() {
   printf("\nHELP MENU:\n");
   printf("./NeuralNetMain [-d DIR][-s TRAINING_FILE TEST_FILE]\n");
-  printf("-d     Specify the directory containing *.train & *.test files\n");
-  printf("-s     Single test. Specify a .train and a .test file\n\n");
+  printf("-d     Specify the directory containing *.train and *.test files\n");
+  printf("-s     Single test. Specify a *.train and a *.test file pair\n");
+  printf("-h     Print this help menu\n\n");
 }
 
 int main(int num_arguments, char const *argv[]) {
@@ -207,11 +213,13 @@ int main(int num_arguments, char const *argv[]) {
   for (int i = 1; i < num_arguments; i++ ) {
     
     string arg = string(argv[i]);
-    cout << arg << endl;
+
     // Commandline option
     if (arg[0] == '-') {
     
       string option = arg.substr(1, arg.size());
+
+      // Directory option containing *.#.train and *.#.test files
       if (option == "d") {
         
         if ( (i+1) < num_arguments) {
@@ -223,7 +231,8 @@ int main(int num_arguments, char const *argv[]) {
         } else {
           cout << "-d requires one argument, namely '-d DIR'" << endl;
         }
-        
+      
+      // Individual file test
       } else if (option == "s") {
         
         if ( (i+2) < num_arguments ) {
@@ -237,7 +246,13 @@ int main(int num_arguments, char const *argv[]) {
         } else {
           cout << "-s requires two arguments, namely '-s TRAINING_FILE TEST_FILE'" << endl;
         }
-        
+      
+      // Display help menu
+      } else if (option == "h") {
+          
+        printHelp();
+
+      // Unknown argument
       } else {
         printf("Unknown argument '%s'\n", arg.c_str() );
         printHelp();

@@ -10,7 +10,6 @@
 #include <ctime>
 #include <cstring>
 
-
 #include "helpers.hpp"
 
 #define LAYERS 2
@@ -41,14 +40,18 @@ class NeuralNetwork {
     // These will contain data about the bias on each node
     double *hiddenNodeBias, *outputNodeBias;
 
-    // Used in backpropagation method 
+    // Used in back propagation method 
     double ** tmpValues;
+
+    // Stores test scores from test files. The values in this vector
+    // are used to compute statistical measures.
+    std::vector <double> testScores;
 
     const inline double sigmoid(double x);
     const inline double sigmoidError(double x);
     const inline double delta(double o, double t);
 
-    // These methods initialize the nerual network's data
+    // These methods initialize the neural network's data
     void initNodeValueArrays();
     void initEdgeWeights();
     void initNodeBiasValues();

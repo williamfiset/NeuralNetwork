@@ -7,7 +7,7 @@ CC = g++
 CFLAGS = -g -Wall -Wno-unused -O3 -std=c++0x
 
 object_files = neuralnetworkmain.o neuralnetwork.o helpers.o
-test_files = T.o helpers.o
+test_files = T.o helpers.o neuralnetwork.o
 EXECUTABLES = neuralNetMain TEST
 
 all: $(EXECUTABLES)
