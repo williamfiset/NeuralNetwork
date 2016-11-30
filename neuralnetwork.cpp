@@ -271,7 +271,8 @@ double NeuralNetwork::test(double ** inputData, double **expectedOutput, int num
 
     }
 
-    double score = testsPassed / totalTests;
+    // printf("%d/%d\n", testsPassed, totalTests );
+    double score = ((double)testsPassed) / totalTests;
     return score;
   
   } else {

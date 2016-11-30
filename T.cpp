@@ -18,6 +18,10 @@ void f(double ***ptr) {
 
 }
 
+void h(std::vector<double> &v) {
+  v.push_back(6);
+}
+
 void g(string **l) {
   *l = new string[2];
   (*l)[0] = "Will";
@@ -44,9 +48,17 @@ int main(int argc, char const *argv[]) {
   // cout << p[1][0] << endl;
   // cout << p[1][1] << endl;
 
-  NeuralNetwork net(4,4,4,4,6.6,6.6);
+  // NeuralNetwork net(4,4,4,4,6.6,6.6);
 
   // net.displayStats();
+
+  std::vector<double> v;
+  h(v);
+
+  for (unsigned int i = 0; i < v.size(); ++i)
+  {
+    cout << v[i] << endl;
+  }
 
   return 0;
 }

@@ -32,9 +32,21 @@ void setNeuralNetworkParameters() {
 
 }
 
-void displayStats(std::vector<double> dataPoints) {
+void displayStats(std::vector<double> &dataPoints, std::vector<string> &testFileNames) {
 
   int len = dataPoints.size();
+
+  if ( dataPoints.size() != testFileNames.size()) {
+    cout << dataPoints.size() << " " << testFileNames.size() << endl;
+    printf("Error. Number of dataPoints is not equal to number of test files\n");
+    return;
+  }
+
+  printf("\nIndividual file Stats:\n");
+  for (int i = 0; i < len; ++i)
+    printf("%s - %f%% tests passed\n", testFileNames[i].c_str(), (100*dataPoints[i]) );
+  printf("\n");
+  
 
   if (len > 0) {
 
@@ -73,7 +85,7 @@ void displayStats(std::vector<double> dataPoints) {
 
     printf("You ran %d tests.\n", len );
     printf("MEAN:     %0.4f\n", mean );
-    printf("MEDiAN:   %0.4f\n", median );
+    printf("MEDIAN:   %0.4f\n", median );
     printf("VARIANCE: %0.4f\n", variance );
     printf("SD:       %0.4f\n", SD );
 
@@ -126,7 +138,7 @@ bool readFileContents( string &filename, int *numRows, int *numCols, int *numInp
       (*labels)[i] = labelName;
     }
 
-    // init memory 
+    // init memory
     *in       = create_DBL_2d_array( *numRows, *numInputCols  );
     *expected = create_DBL_2d_array( *numRows, *numOutputCols );
 
@@ -143,7 +155,7 @@ bool readFileContents( string &filename, int *numRows, int *numCols, int *numInp
 
 // Executes the neural network on some input. The parameters to the nerual
 // netork must be set before calling this function ( NUM_HIDDEN_NODES, MAX_EPOCH, LEARNING_RATE, MAX_ERROR ... )
-void executeNeuralNet(string &trainingFileName, string &testFileName, std::vector<double> *dataPoint) {
+void executeNeuralNet(string &trainingFileName, string &testFileName, vector<double> &dataPoints) {
 
   string *labels = NULL;
   int numRows, numCols, numInputCols, numOutputCols;
@@ -164,7 +176,8 @@ void executeNeuralNet(string &trainingFileName, string &testFileName, std::vecto
 
       // Test neural network against test data
       double score = net.test( testInputData, testExpectedOutput, numRows );
-      dataPoint->push_back(score);
+      printf("%f\n", score);
+      dataPoints.push_back(score);
 
       // Free memory
       free_DBL_2d_array(testInputData, numRows);
@@ -191,6 +204,8 @@ void runMultipleTests(string &directory) {
   
   glob_t glob_result;
   glob( (directory + "/*").c_str(), GLOB_TILDE, NULL, &glob_result);
+  
+  vector<string> testFileNames;
 
   // Loop through all files in the directory
   for(unsigned int i = 0; i < glob_result.gl_pathc; ++i) {
@@ -202,7 +217,7 @@ void runMultipleTests(string &directory) {
     
     if (N >= 3) {
 
-      // string fileName = dirItemSplit[0];
+      string fileName = dirItemSplit[0];
       string fileExtension = dirItemSplit[N-1];
       string fileNumber = dirItemSplit[N-2];
       
@@ -210,6 +225,7 @@ void runMultipleTests(string &directory) {
         if (fileExtension == "train") {
           trainingMap[fileNumber] = dirItem;
         } else if (fileExtension == "test") {
+          testFileNames.push_back(dirItem);
           testMap[fileNumber] = dirItem;
         }
       }
@@ -220,7 +236,7 @@ void runMultipleTests(string &directory) {
   if (trainingMap.size() > 0) {
 
     setNeuralNetworkParameters();
-    std::vector<double> *dataPoints = new std::vector<double>();
+    std::vector<double> dataPoints;
 
     // Find all pairs of training and testing files and
     // run them against the neural net
@@ -239,7 +255,10 @@ void runMultipleTests(string &directory) {
       }
     }
 
-    displayStats(*dataPoints);
+    for (unsigned int i = 0; i < dataPoints.size(); ++i)
+      cout << dataPoints[i] << endl;
+
+    displayStats(dataPoints, testFileNames);
 
   }
 
@@ -295,10 +314,14 @@ int main(int num_arguments, char const *argv[]) {
           string trainingFileName = string(argv[++i]);
           string testFileName = string(argv[++i]);
           
-          std::vector<double> *dataPoints = new std::vector<double>(0);
           setNeuralNetworkParameters();
+
+          std::vector<double> dataPoints;
+          std::vector<string> testFileNames;
+          testFileNames.push_back(testFileName);
+
           executeNeuralNet(trainingFileName, testFileName, dataPoints);
-          displayStats(*dataPoints);
+          displayStats(dataPoints, testFileNames);
           
         } else {
           cout << "-s requires two arguments, namely '-s TRAINING_FILE TEST_FILE'" << endl;
