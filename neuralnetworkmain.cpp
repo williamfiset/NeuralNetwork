@@ -42,7 +42,7 @@ void displayStats(std::vector<double> &dataPoints, std::vector<string> &testFile
     return;
   }
 
-  printf("\nIndividual file Stats:\n");
+  printf("\nIndividual file stats:\n");
   for (int i = 0; i < len; ++i)
     printf("%s - %f%% tests passed\n", testFileNames[i].c_str(), (100*dataPoints[i]) );
   printf("\n");
