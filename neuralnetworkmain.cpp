@@ -255,9 +255,6 @@ void runMultipleTests(string &directory) {
       }
     }
 
-    for (unsigned int i = 0; i < dataPoints.size(); ++i)
-      cout << dataPoints[i] << endl;
-
     displayStats(dataPoints, testFileNames);
 
   }
@@ -266,11 +263,13 @@ void runMultipleTests(string &directory) {
 }
 
 void printHelp() {
+  
   printf("\nHELP MENU:\n");
   printf("./NeuralNetMain [-d DIR][-s TRAINING_FILE TEST_FILE]\n");
   printf("-d     Specify the directory containing *.train and *.test files\n");
   printf("-s     Single test. Specify a *.train and a *.test file pair\n");
   printf("-h     Print this help menu\n\n");
+
 }
 
 int main(int num_arguments, char const *argv[]) {
