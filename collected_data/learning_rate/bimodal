@@ -1,77 +1,49 @@
-LR mean median variance SD
-0 0 0 0 0
 0.05 
-
 MEAN:     0.5198
 MEDIAN:   0.5034
 VARIANCE: 0.0031
 SD:       0.0553
-
 0.1
-
 MEAN:     0.5250
 MEDIAN:   0.5034
 VARIANCE: 0.0057
 SD:       0.0757
-
 0.15
-
 MEAN:     0.5302
 MEDIAN:   0.5034
 VARIANCE: 0.0063
 SD:       0.0792
-
-
 0.2
-
 MEAN:     0.5534
 MEDIAN:   0.5170
 VARIANCE: 0.0119
 SD:       0.1091
-
-
 0.25
-
 MEAN:     0.5000
 MEDIAN:   0.4932
 VARIANCE: 0.0008
 SD:       0.0274
-
-
 0.3
-
 MEAN:     0.5093
 MEDIAN:   0.4932
 VARIANCE: 0.0021
 SD:       0.0462
-
-
 0.35
-
-
 MEAN:     0.5000
 MEDIAN:   0.4932
 VARIANCE: 0.0008
 SD:       0.0274
-
 0.4
-
 MEAN:     0.5000
 MEDIAN:   0.4932
 VARIANCE: 0.0008
 SD:       0.0274
-
-
 0.45
-
 MEAN:     0.5214
 MEDIAN:   0.5011
 VARIANCE: 0.0051
 SD:       0.0714
-
-
 0.5
-
 MEAN:     0.5000
 MEDIAN:   0.4932
 VARIANCE: 0.0008
