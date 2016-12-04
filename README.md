@@ -119,7 +119,7 @@ SD:       0.0964
 
 If you have some of your own data and you would like to run it on this neural network you can easily do so! The generate_jackknife_sets.py file can generate *.train and *.test files given an input data file structured in the following way:
 
-The first row of the input data should contain comma seperated column names containing the data that will show up below this name. The columns of data for the input nodes should be on the left and the expected output data columns on the right. Below the first row should follow associated rows of comma delimited data values of either real numbers or nominal data. This format is very similar to the CSV.
+The first row of the input data should contain comma seperated column names representing the data that will show up below this name. The columns of data for the input nodes should be on the left and the expected output data columns on the right. Below the first row should follow associated rows of comma delimited data values of either real numbers or nominal data. This format is very similar to the CSV.
 
 For examples of how the input file is setup checkout:
 * [The bimodal data input file] (https://github.com/williamfiset/NeuralNetwork/blob/master/data/bimodal/bimodal_data) 
