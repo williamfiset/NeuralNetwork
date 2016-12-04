@@ -218,7 +218,8 @@ double NeuralNetwork::train(double **inputData, double **expectedOutput, int num
   
   for (int epoch = 1; epoch <= MAX_EPOCH && globalError > MAX_ERROR; ++epoch) {
     
-    printf("Epoch: %d  Training error: %.10f\n", epoch, globalError);
+    if (VERBOSE && epoch % 50 == 0) printf("Epoch: %d  Training error: %.10f\n", epoch, globalError);
+    else if (epoch % 500 == 0) printf("Epoch: %d  Training error: %.10f\n", epoch, globalError);
 
     // Loop through each row in the training data
     for (int i = 0; i < numRows; ++i) {
@@ -275,7 +276,6 @@ double NeuralNetwork::test(double ** inputData, double **expectedOutput, int num
 
     }
 
-    // printf("%d/%d\n", testsPassed, totalTests );
     double score = ((double)testsPassed) / totalTests;
     return score;
   

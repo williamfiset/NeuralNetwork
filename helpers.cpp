@@ -6,12 +6,6 @@ const inline double randomNum() {
   return ((double)rand() / RAND_MAX);
 }
 
-void printAr(double *ar, int sz) {
-	for (int i = 0; i < sz; i++)
-		printf("%0.4f ", ar[i]);
-	printf("\n");
-}
-
 // Set random values in the array between the range [0,1]
 void setRandomValues(double *array, int sz) {
   if (array != NULL) {
@@ -27,16 +21,6 @@ void clearArray(double *ar, int sz) {
   if (ar != NULL) {
     for(int i = 0; i < sz; i++) {
       ar[i] = 0;
-    }
-  }
-}
-
-void print_DBL_2D_array(double **ar, int numRows, int numCols) {
-  if (ar != NULL) {
-    for (int i = 0; i < numRows; ++i) {
-      for (int j = 0; j < numCols; ++j)
-        printf("%0.4f ", ar[i][j]);
-      printf("\n");
     }
   }
 }
@@ -67,15 +51,6 @@ std::vector <std::string> split (const std::string &str, char delim ) {
     if (!item.empty()) // We do not want empty strings
       elems.push_back(item);
   return elems;
-}
-
-
-// Trims a string removing whitespace on left and right
-void trim( std::string &s ) {
-  int left = 0, right = s.size()-1, sz = s.size();
-  for (; left != sz && isspace(s[left]); left++) { }
-  for (; right >= 0 && isspace(s[right]); right--) { }
-  s = s.substr(left, right - left + 1 ); // substr returns a copy 
 }
 
 // Stolen from

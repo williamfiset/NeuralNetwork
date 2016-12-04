@@ -10,18 +10,22 @@
 #include <sstream>
 #include <algorithm>
 
-void printAr(double *ar, int sz);
+// Set all the values in an array to be zero (cleaner than memset IMO)
 void clearArray(double *ar, int sz);
 
+// Set random values in the array between the range [0,1]
 void setRandomValues(double *array, int sz);
-double * createRandomArray(int sz);
 
+// Allocates memory for a 2D double array
 double ** create_DBL_2d_array(int numRows, int numCols);
-void free_DBL_2d_array(double ** arr, int numRows);
-void print_DBL_2d_array(double **ar, int numRows, int numCols);
 
-void trim( std::string &s );
-std::vector <std::string> split (const std::string &str, char delim );
+// Deallocate all the memory in a 2D double array
+void free_DBL_2d_array(double ** arr, int numRows);
+
+// Determines is a string is a number
 bool is_number(const std::string &s);
+
+// Split a string by a delimiter
+std::vector <std::string> split (const std::string &str, char delim );
 
 #endif

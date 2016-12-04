@@ -167,7 +167,7 @@ void executeNeuralNet(string &trainingFileName, string &testFileName, vector<dou
 
   if ( readFileContents(trainingFileName, &numRows, &numCols, &numInputCols, &numOutputCols, &labels, &trainingInputData, &trainingExpectedOutput) ) {
 
-    // Intialize and train neural network
+    // Initialize and train neural network
     NeuralNetwork net( numInputCols, NUM_HIDDEN_NODES, numOutputCols, MAX_EPOCH, LEARNING_RATE, MAX_ERROR );
     net.train(trainingInputData, trainingExpectedOutput, numRows);
 
@@ -179,7 +179,7 @@ void executeNeuralNet(string &trainingFileName, string &testFileName, vector<dou
 
       // Test neural network against test data
       double score = net.test( testInputData, testExpectedOutput, numRows );
-      printf("%f\n", score);
+      printf("%s - %.4f%% tests passed\n\n", testFileName.c_str() , score);
       dataPoints.push_back(score);
 
       // Free memory
