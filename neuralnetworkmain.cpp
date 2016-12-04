@@ -6,6 +6,9 @@
 #include "helpers.hpp"
 #include "neuralnetwork.hpp"
 
+// If toggled true then display text verbosely
+bool VERBOSE = false;
+
 using namespace std;
 
 int MAX_EPOCH, NUM_HIDDEN_NODES;
@@ -199,6 +202,8 @@ void executeNeuralNet(string &trainingFileName, string &testFileName, vector<dou
 // and run them on the neural network
 void runMultipleTests(string &directory) {
   
+  if (VERBOSE) printf("Searching in '%s' for *.train and *.text files\n", directory.c_str() );
+
   map <string, string> trainingMap;
   map <string, string> testMap;
   
@@ -233,6 +238,9 @@ void runMultipleTests(string &directory) {
     }
   }
   
+  if (VERBOSE) printf("Found %ld training files\n", trainingMap.size() );
+  if (VERBOSE) printf("Found %ld testing files\n", testMap.size() );
+
   if (trainingMap.size() > 0) {
 
     setNeuralNetworkParameters();
@@ -268,6 +276,7 @@ void printHelp() {
   printf("./NeuralNetMain [-d DIR][-s TRAINING_FILE TEST_FILE]\n");
   printf("-d     Specify the directory containing *.train and *.test files\n");
   printf("-s     Single test. Specify a *.train and a *.test file pair\n");
+  printf("-v     Turn on verbose mode to display more information\n");
   printf("-h     Print this help menu\n\n");
 
 }
@@ -275,7 +284,7 @@ void printHelp() {
 int main(int num_arguments, char const *argv[]) {
 
   if (num_arguments == 1) {
-    printf("Please supply commandline arguments!\n");
+    printf("Please supply command-line arguments!\n");
     printHelp();
     return 0;
   }
@@ -312,7 +321,7 @@ int main(int num_arguments, char const *argv[]) {
 
           string trainingFileName = string(argv[++i]);
           string testFileName = string(argv[++i]);
-          
+
           setNeuralNetworkParameters();
 
           std::vector<double> dataPoints;
@@ -321,11 +330,16 @@ int main(int num_arguments, char const *argv[]) {
 
           executeNeuralNet(trainingFileName, testFileName, dataPoints);
           displayStats(dataPoints, testFileNames);
-          
+        
         } else {
           cout << "-s requires two arguments, namely '-s TRAINING_FILE TEST_FILE'" << endl;
         }
       
+      // Turn on verbose mode!
+      } else if ( option == "v" ) {
+
+        VERBOSE = true;
+
       // Display help menu
       } else if (option == "h") {
           

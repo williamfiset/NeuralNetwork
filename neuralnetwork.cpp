@@ -2,6 +2,10 @@
 #include "helpers.hpp"
 #include "neuralnetwork.hpp"
 
+// Get the verbose flag from neuralnetworkmain
+// to know whether we should verbosely display text
+extern bool VERBOSE;
+
 NeuralNetwork::NeuralNetwork(int numInputNodes,
                              int numHiddenNodes,
                              int numOutputNodes,
