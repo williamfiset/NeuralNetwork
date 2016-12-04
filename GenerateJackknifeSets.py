@@ -1,6 +1,12 @@
 #!/usr/bin/env python
 '''
-William Fiset
+
+This script can generate jackknife training and testing data sets.
+It takes as input three arguments: an input file containing columns
+of data of either real values or nominal values, the number of 
+jackknife sets you want and an integer which is the value of the ith 
+column which divides the input data from the expected.
+
 
 '''
 
