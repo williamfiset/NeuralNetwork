@@ -28,10 +28,3 @@ clean:
 	rm -f $(object_files)
 	rm -f $(EXECUTABLES)
 
-
-
-
-
-
-
-
