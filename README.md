@@ -122,9 +122,9 @@ If you have some of your own data and you would like to run it on this neural ne
 The first row of the input data should contain comma seperated column names containing the data that will show up below this name. The columns of data for the input nodes should be on the left and the expected output data columns on the right. Below the first row should follow associated rows of comma delimited data values of either real numbers or nominal data. This format is very similar to the CSV.
 
 For examples of how the input file is setup checkout:
-1) [The bimodal data input file] (https://github.com/williamfiset/NeuralNetwork/blob/master/data/bimodal/bimodal_data) 
-2) [The Iris data input file] (https://github.com/williamfiset/NeuralNetwork/blob/master/data/iris/iris_data)
-3) [The spiral data] (https://github.com/williamfiset/NeuralNetwork/blob/master/data/spiral/spiral_data)
+* [The bimodal data input file] (https://github.com/williamfiset/NeuralNetwork/blob/master/data/bimodal/bimodal_data) 
+* [The Iris data input file] (https://github.com/williamfiset/NeuralNetwork/blob/master/data/iris/iris_data)
+* [The spiral data] (https://github.com/williamfiset/NeuralNetwork/blob/master/data/spiral/spiral_data)
 
 The last step is to actually generate the *.train and *.test file using the script. To generate 25 *.train and *.test jackknife files with the iris data do the following:
 
