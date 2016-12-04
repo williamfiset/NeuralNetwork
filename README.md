@@ -37,7 +37,7 @@ Here is a walk through of what happens when the neural network is ran on the Iri
 
 Then what follows is a prompt to get you to input parameters for the neural network. Here I have entered some values I think would work well with the Iris data, but this will vary on your problem. 
 
-``` bash
+```
 DIR: data/iris/
 
 Please enter a positive integer for the number of hidden nodes
@@ -56,7 +56,7 @@ learning rate = 0.06
 
 Following this the neural network will be run on each training file until either the trained error is low enough (below the entered threshold) or the maximum epoch number is reached.
 
-``` bash
+```
 Epoch: 500  Training error: 0.0033523508
 Epoch: 1000  Training error: 0.0022021411
 Epoch: 1500  Training error: 0.0020096796
@@ -94,7 +94,7 @@ data/iris//iris_data.9.test - 0.7143% tests passed
 
 Once all the pairs of *.train and *.test files has been run you will get a statistics summary of how each pair of training and test files performed. 
 
-``` bash
+```
 Individual file stats:
 data/iris//iris_data.0.test - 100.000000% tests passed
 data/iris//iris_data.1.test - 100.000000% tests passed
