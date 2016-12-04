@@ -125,6 +125,7 @@ For examples of how the input file is setup checkout:
 * [The bimodal data input file] (https://github.com/williamfiset/NeuralNetwork/blob/master/data/bimodal/bimodal_data) 
 * [The Iris data input file] (https://github.com/williamfiset/NeuralNetwork/blob/master/data/iris/iris_data)
 * [The spiral data] (https://github.com/williamfiset/NeuralNetwork/blob/master/data/spiral/spiral_data)
+* [Student alcohol data](https://github.com/williamfiset/NeuralNetwork/blob/master/data/student_alcohol/student_data)
 
 The last step is to actually generate the *.train and *.test file using the script. To generate 25 *.train and *.test jackknife files with the iris data do the following:
 
