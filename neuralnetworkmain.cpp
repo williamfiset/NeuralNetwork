@@ -24,10 +24,11 @@ void setNeuralNetworkParameters() {
   printf("maximum epoch = ");
   cin >> MAX_EPOCH;
 
-  printf("\nPlease enter a floating point number for the amount of error until\n");
-  printf("the network is considered trained (recommended: [0.05 to 0.00001])\n");
-  printf("trained error = ");
-  cin >> MAX_ERROR;
+  MAX_ERROR = 0.00001;
+  // printf("\nPlease enter a floating point number for the amount of error until\n");
+  // printf("the network is considered trained (recommended: [0.05 to 0.00001])\n");
+  // printf("trained error = ");
+  // cin >> MAX_ERROR;
 
   printf("\nPlease enter a floating point number for the learning rate \n");
   printf("learning rate = ");
@@ -179,7 +180,7 @@ void executeNeuralNet(string &trainingFileName, string &testFileName, vector<dou
 
       // Test neural network against test data
       double score = net.test( testInputData, testExpectedOutput, numRows );
-      printf("%s - %.4f%% tests passed\n\n", testFileName.c_str() , score);
+      // printf("%s - %.4f%% tests passed\n\n", testFileName.c_str() , score);
       dataPoints.push_back(score);
 
       // Free memory
