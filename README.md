@@ -1,6 +1,6 @@
 # NeuralNetwork
 
-### How to run neural network
+## How to compile the neural network
 
 Make sure you have a g++ compiler that supports at minimum c++0x
 then you should be able to compile the files for the Neural Network
@@ -29,7 +29,7 @@ To run multiple training and test sets use the -d flag (d for directory) and spe
 
 ## Sample run example
 
-Here is a walk through of what happens when the neural network is ran on the Iris data from [UCI machine learning repository](http://archive.ics.uci.edu/ml/) on multiple generated [Jackknife sets](https://en.wikipedia.org/wiki/Cross-validation_(statistics)) (leave-one-out cross-validation). First we begin by executing the network on all the training and test files:
+Here is a walk through of what happens when the neural network is ran on the Iris data from [UCI machine learning repository](http://archive.ics.uci.edu/ml/datasets/Iris) on multiple generated [Jackknife sets](https://en.wikipedia.org/wiki/Cross-validation_(statistics)) (leave-one-out cross-validation). First we begin by executing the network on all the training and test files:
 
 ``` bash
 ./neuralNetMain -d data/iris/
@@ -117,8 +117,22 @@ SD:       0.0964
 
 ## Creating your own datasets
 
-If you have some of your own data you would like to run on this neural network and 
+If you have some of your own data and you would like to run it on this neural network you can easily do so! The generate_jackknife_sets.py file can generate *.train and *.test files given an input data file structured in the following way:
 
+The first row of the input data should contain comma seperated column names containing the data that will show up below this name. The columns of data for the input nodes should be on the left and the expected output data columns on the right. Below the first row should follow associated rows of comma delimited data values of either real numbers or nominal data. This format is very similar to the CSV.
+
+For examples of how the input file is setup checkout:
+1) [The bimodal data input file] (https://github.com/williamfiset/NeuralNetwork/blob/master/data/bimodal/bimodal_data) 
+2) [The Iris data input file] (https://github.com/williamfiset/NeuralNetwork/blob/master/data/iris/iris_data)
+3) [The spiral data] (https://github.com/williamfiset/NeuralNetwork/blob/master/data/spiral/spiral_data)
+
+The last step is to actually generate the *.train and *.test file using the script. To generate 25 *.train and *.test jackknife files with the iris data do the following:
+
+``` python
+python generate_jackknife_sets.py 25 4
+```
+
+Note that the last argument "4" tells the script which column should be considered the cutoff point for input node data to the neural network. The iris data has a total of five columns. The first four are used as input and the last is the expected output value of the network (usually a nominal value but doesn't have to be).
 
 
 
