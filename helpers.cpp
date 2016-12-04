@@ -1,12 +1,12 @@
 
 #include "helpers.hpp"
 
-// Return a data between [0,1]
+// Return a real number between zero and one
 const inline double randomNum() {
   return ((double)rand() / RAND_MAX);
 }
 
-// Set random values in the array between the range [0,1]
+// Set random values in an array to be in between the range zero to one
 void setRandomValues(double *array, int sz) {
   if (array != NULL) {
     for (int i = 0; i < sz; ++i) {
